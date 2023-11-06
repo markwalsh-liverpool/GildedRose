@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using csharp.Items;
 
 namespace csharp
 {
@@ -24,96 +26,36 @@ namespace csharp
                 {
                     case ConjuredManaCake:
                     {
-                        item.Quality -= 2;
-                       
-                        if (item.Quality < 0) {
-
-                            item.Quality = 0;
-                        }
-
-                        item.SellIn -= 1;
+                        var conjuredManaCake = new ConjuredManaCake();
+                        conjuredManaCake.UpdateItem(item);
                         break;
                     }
                     case AgedBrie:
                     {
-                        if (QualityIsUnder50(item))
-                        {
-                            item.Quality += 1;
-                        }
-
-                        item.SellIn -= 1;
-
-                        if (item.SellIn < 0 && item.Quality < 50)
-                        {
-                            item.Quality += 1;
-
-                        }
-
+                        var agedBrie = new AgedBrie();
+                        agedBrie.UpdateItem(item);
                         break;
                     }
                     case BackstagePasses:
                     {
-                        if (QualityIsUnder50(item))
-                        {
-                            item.Quality += 1;
-                        }
-
-                        if (item.SellIn < 11 && QualityIsUnder50(item))
-                        {
-                            item.Quality += 1;
-                        }
-
-                        if (item.SellIn < 6 && QualityIsUnder50(item))
-                        {
-                            item.Quality += 1;
-                        }
-
-                        item.SellIn -= 1;
-
-
-                        if (item.SellIn < 0)
-                        {
-                            item.Quality -= item.Quality;
-                        }
-
-
+                        var backstagePasses = new BackstagePasses();
+                        backstagePasses.UpdateItem(item);
                         break;
-                }
+                    }
                     case SulfurasHandOfRagnaros:
                     {
-                        if (QualityIsUnder50(item))
-                        {
-                            item.Quality += 1;
-                        }
-
+                        var sulfurasHandOfRagnaros = new SulfurasHandOfRagnaros();
+                        sulfurasHandOfRagnaros.UpdateItem(item);
                         break;
                     }
                     default:
                     {
-                        if (item.Quality > 0)
-                        {
-                            item.Quality -= 1;
-                        }
-                        else if (item.Quality < 50)
-                        {
-                            item.Quality += 1;
-                        }
-
-                        item.SellIn -= 1;
-
-                        if (item.SellIn < 0 && item.Quality > 0)
-                        {
-                            item.Quality -= 1;
-                        }
+                        var defaultItem = new DefaultItem();
+                        defaultItem.UpdateItem(item);
                         break;
                     }
                 }
             }
-        }
-
-        private static bool QualityIsUnder50(Item item)
-        {
-            return item.Quality < 50;
         }
     }
 }
