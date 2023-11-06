@@ -20,100 +20,100 @@ namespace csharp
         {
             foreach (var item in Items)
             {
-                if (item.Name == ConjuredManaCake)
+                switch (item.Name)
                 {
-                    if (item.Quality - 2 >= 0)
+                    case ConjuredManaCake:
                     {
                         item.Quality -= 2;
-                    }
-                    else
-                    {
-                        item.Quality = 0;
-                    }
+                       
+                        if (item.Quality < 0) {
 
-                    item.SellIn -= 1;
-                    break;
-                }
-
-                if (item.Name != AgedBrie && item.Name != BackstagePasses && item.Name != SulfurasHandOfRagnaros)
-                {
-                    if (item.Quality > 0)
-                    {
-                            // UpdateQuality_ForUnknownItemWithQualityGreaterThan0_QualityIsZeroAndSellInIsMinus1
-                            item.Quality -= 1;
-                    }
-                }
-                else
-                {
-                    if (item.Quality < 50)
-                    {
-                        // UpdateQuality_ForAgedBrieWithQualityOf2AndSellInSetTo0_QualityIsFourAndSellInIsMinus1
-                        item.Quality += 1;
-
-                        if (item.Name == BackstagePasses)
-                        {
-                            if (item.SellIn < 11)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    // UpdateQuality_ForBackstagePassesToATAFKAL80ETCConcertWithQualityOf2AndSellInSetTo10_QualityIsFourAndSellInIsNine
-                                    // UpdateQuality_ForBackstagePassesToATAFKAL80ETCConcertWithQualityOf2AndSellInSetTo5_QualityIsFiveAndSellInIsFour
-                                    item.Quality += 1;
-                                }
-                            }
-
-                            if (item.SellIn < 6)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    // UpdateQuality_ForBackstagePassesToATAFKAL80ETCConcertWithQualityOf2AndSellInSetTo5_QualityIsFiveAndSellInIsFour
-                                    item.Quality += 1;
-                                }
-                            }
+                            item.Quality = 0;
                         }
-                    }
-                }
 
-                if (item.Name != SulfurasHandOfRagnaros)
-                {
-                    // UpdateQuality_ForUnknownItemWithQualitySetTo0_QualityIsZeroAndSellInIsMinus1
-                    // UpdateQuality_ForUnknownItemWithQualityGreaterThan0_QualityIsZeroAndSellInIsMinus1
-                    // UpdateQuality_ForBackstagePassesToATAFKAL80ETCConcertWithQualityOf2AndSellInSetTo10_QualityIsFourAndSellInIsNine
-                    // UpdateQuality_ForBackstagePassesToATAFKAL80ETCConcertWithQualityOf2AndSellInSetTo5_QualityIsFiveAndSellInIsFour
-                    item.SellIn -= 1;
-                }
-
-                if (item.SellIn < 0)
-                {
-                    if (item.Name != AgedBrie)
-                    {
-                        if (item.Name != BackstagePasses)
-                        {
-                            if (item.Quality > 0)
-                            {
-                                if (item.Name != SulfurasHandOfRagnaros)
-                                {
-                                    // UpdateQuality_ForUnknownItemWithQualityGreaterThan1_QualityIsZeroAndSellInIsMinus1
-                                    item.Quality -= 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // UpdateQuality_ForBackstagePassesToATAFKAL80ETCConcertWithQualityOf2AndSellInSetToMinus1_QualityIsZeroAndSellInIsMinusTwo
-                            item.Quality -= item.Quality;
-                        }
+                        item.SellIn -= 1;
+                        break;
                     }
-                    else
+                    case AgedBrie:
                     {
-                        if (item.Quality < 50)
+                        if (QualityIsUnder50(item))
                         {
-                            // UpdateQuality_ForAgedBrieWithQualityOf2AndSellInSetTo0_QualityIsFourAndSellInIsMinus1
                             item.Quality += 1;
                         }
+
+                        item.SellIn -= 1;
+
+                        if (item.SellIn < 0 && item.Quality < 50)
+                        {
+                            item.Quality += 1;
+
+                        }
+
+                        break;
+                    }
+                    case BackstagePasses:
+                    {
+                        if (QualityIsUnder50(item))
+                        {
+                            item.Quality += 1;
+                        }
+
+                        if (item.SellIn < 11 && QualityIsUnder50(item))
+                        {
+                            item.Quality += 1;
+                        }
+
+                        if (item.SellIn < 6 && QualityIsUnder50(item))
+                        {
+                            item.Quality += 1;
+                        }
+
+                        item.SellIn -= 1;
+
+
+                        if (item.SellIn < 0)
+                        {
+                            item.Quality -= item.Quality;
+                        }
+
+
+                        break;
+                }
+                    case SulfurasHandOfRagnaros:
+                    {
+                        if (QualityIsUnder50(item))
+                        {
+                            item.Quality += 1;
+                        }
+
+                        break;
+                    }
+                    default:
+                    {
+                        if (item.Quality > 0)
+                        {
+                            item.Quality -= 1;
+                        }
+                        else if (item.Quality < 50)
+                        {
+                            item.Quality += 1;
+                        }
+
+                        item.SellIn -= 1;
+
+                        if (item.SellIn < 0 && item.Quality > 0)
+                        {
+                            item.Quality -= 1;
+                        }
+                        break;
                     }
                 }
             }
+        }
+
+        private static bool QualityIsUnder50(Item item)
+        {
+            return item.Quality < 50;
         }
     }
 }
