@@ -6,7 +6,7 @@ public abstract class BaseItem : Item
 
     protected const int MinimumQuality = 0;
 
-    protected const int MaximumQuality = 50;
+    protected abstract int MaximumQuality { get; }
 
     protected bool QualityIsAboveMinimum(int quality)
     {

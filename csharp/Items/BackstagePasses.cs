@@ -2,6 +2,8 @@
 
 public class BackstagePasses : BaseItem
 {
+    protected override int MaximumQuality => 50;
+
     public override void UpdateItem(Item item)
     {
         switch (item.SellIn)

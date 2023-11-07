@@ -2,6 +2,8 @@
 
 public class AgedBrie : BaseItem
 {
+    protected override int MaximumQuality => 50;
+
     public override void UpdateItem(Item item)
     {
         if (QualityIsBelowMaximum(item.Quality))

@@ -5,11 +5,6 @@ namespace csharp
 {
     public class GildedRose
     {
-        private const string ConjuredManaCake = "Conjured Mana Cake";
-        private const string AgedBrie = "Aged Brie";
-        private const string BackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
-        private const string SulfurasHandOfRagnaros = "Sulfuras, Hand of Ragnaros";
-
         private IList<Item> Items;
         private readonly IItemFactory ItemFactory;
 

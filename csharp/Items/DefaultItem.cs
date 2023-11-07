@@ -2,15 +2,13 @@
 
 public class DefaultItem : BaseItem
 {
+    protected override int MaximumQuality => 50;
+
     public override void UpdateItem(Item item)
     {
         if (QualityIsAboveMinimum(item.Quality))
         {
             item.Quality -= 1;
-        }
-        else if (QualityIsBelowMaximum(item.Quality))
-        {
-            item.Quality += 1;
         }
 
         item.SellIn -= 1;

@@ -2,6 +2,8 @@
 
 public class ConjuredManaCake : BaseItem
 {
+    protected override int MaximumQuality => 50;
+
     public override void UpdateItem(Item item)
     {
         item.Quality -= 2;

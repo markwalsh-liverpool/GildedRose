@@ -2,11 +2,10 @@
 
 public class SulfurasHandOfRagnaros : BaseItem
 {
+    protected override int MaximumQuality => 80;
+
     public override void UpdateItem(Item item)
     {
-        if (QualityIsBelowMaximum(item.Quality))
-        {
-            item.Quality += 1;
-        }
+        item.Quality = MaximumQuality;
     }
 }

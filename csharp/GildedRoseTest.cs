@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using csharp.Factories;
-using csharp.Factories
-
-Framework.Interfaces;
+using csharp.Factories;
+using NUnit.Framework;
 
 namespace csharp
 {
