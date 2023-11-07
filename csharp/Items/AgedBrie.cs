@@ -14,7 +14,6 @@ public class AgedBrie : BaseItem
         if (item.SellIn < 0 && QualityIsBelowMaximum(item.Quality))
         {
             item.Quality += 1;
-
         }
     }
 }

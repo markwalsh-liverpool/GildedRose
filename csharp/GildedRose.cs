@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using csharp.Items;
+using csharp.Factories.Interfaces;
 
 namespace csharp
 {
@@ -11,50 +10,21 @@ namespace csharp
         private const string BackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
         private const string SulfurasHandOfRagnaros = "Sulfuras, Hand of Ragnaros";
 
-        IList<Item> Items;
+        private IList<Item> Items;
+        private readonly IItemFactory ItemFactory;
 
-        public GildedRose(IList<Item> Items)
+        public GildedRose(IList<Item> items, IItemFactory itemFactory)
         {
-            this.Items = Items;
+            this.Items = items; 
+            this.ItemFactory = itemFactory;
         }
 
         public void UpdateQuality()
         {
             foreach (var item in Items)
             {
-                switch (item.Name)
-                {
-                    case ConjuredManaCake:
-                    {
-                        var conjuredManaCake = new ConjuredManaCake();
-                        conjuredManaCake.UpdateItem(item);
-                        break;
-                    }
-                    case AgedBrie:
-                    {
-                        var agedBrie = new AgedBrie();
-                        agedBrie.UpdateItem(item);
-                        break;
-                    }
-                    case BackstagePasses:
-                    {
-                        var backstagePasses = new BackstagePasses();
-                        backstagePasses.UpdateItem(item);
-                        break;
-                    }
-                    case SulfurasHandOfRagnaros:
-                    {
-                        var sulfurasHandOfRagnaros = new SulfurasHandOfRagnaros();
-                        sulfurasHandOfRagnaros.UpdateItem(item);
-                        break;
-                    }
-                    default:
-                    {
-                        var defaultItem = new DefaultItem();
-                        defaultItem.UpdateItem(item);
-                        break;
-                    }
-                }
+                var baseItem = ItemFactory.CreateItem(item.Name);
+                baseItem.UpdateItem(item);
             }
         }
     }
