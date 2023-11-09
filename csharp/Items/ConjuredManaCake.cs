@@ -1,18 +1,11 @@
-﻿namespace csharp.Items;
+﻿using csharp.Items.Base;
 
-public class ConjuredManaCake : BaseItem
+namespace csharp.Items;
+
+public class ConjuredManaCake : VariableQualityBaseItem
 {
-    protected override int MaximumQuality => 50;
-
-    public override void UpdateItem(Item item)
+    protected override void AdjustQuality(Item item)
     {
         item.Quality -= 2;
-
-        if (QualityIsBelowMinimum(item.Quality))
-        {
-            item.Quality = MinimumQuality;
-        }
-
-        item.SellIn -= 1;
     }
 }

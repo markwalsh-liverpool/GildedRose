@@ -1,4 +1,4 @@
-﻿using csharp.Items;
+﻿using csharp.Items.Base;
 
 namespace csharp.Factories.Interfaces;
 

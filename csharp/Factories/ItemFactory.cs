@@ -1,29 +1,20 @@
 ﻿using csharp.Factories.Interfaces;
 using csharp.Items;
+using csharp.Items.Base;
 
 namespace csharp.Factories;
 
 public class ItemFactory : IItemFactory
 {
-    private const string ConjuredManaCake = "Conjured Mana Cake";
-    private const string AgedBrie = "Aged Brie";
-    private const string BackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
-    private const string SulfurasHandOfRagnaros = "Sulfuras, Hand of Ragnaros";
-
     public BaseItem CreateItem(string itemName)
     {
-        switch (itemName)
+        return itemName switch
         {
-            case ConjuredManaCake:
-                return new ConjuredManaCake();
-            case AgedBrie:
-                return new AgedBrie();
-            case BackstagePasses:
-                return new BackstagePasses();
-            case SulfurasHandOfRagnaros:
-                return new SulfurasHandOfRagnaros();
-            default:
-                return new DefaultItem();
-        }
+            not null when itemName.StartsWith("Conjured") => new ConjuredManaCake(),
+            "Aged Brie" => new AgedBrie(),
+            not null when itemName.StartsWith("Backstage") => new BackstagePasses(),
+            not null when itemName.StartsWith("Sulfuras") => new SulfurasHandOfRagnaros(),
+            _ => new DefaultItem()
+        };
     }
 }

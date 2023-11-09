@@ -1,59 +1,53 @@
 ﻿using System.Collections.Generic;
-using csharp.Factories;
+using System.Linq;
 using csharp.Factories;
 using NUnit.Framework;
 
-namespace csharp
+namespace csharp.Tests
 {
     [TestFixture]
-    public class GildedRoseTest
+    public class GildedRoseTests
     {
         [Test]
-        public void UpdateQuality_ForUnknownItemWithQualitySetTo0_QualityIsZeroAndSellInIsMinus1()
+        public void UpdateQuality_ForUnknownItemWithQualityOf1AndSellInSetTo1_QualityIsZeroAndSellInIsZero()
         {
             // Arrange
-            IList<Item> items = new List<Item> { new() { Name = "foo", SellIn = 0, Quality = 0 } };
+            IList<Item> items = new List<Item> { new() { Name = "foo", SellIn = 1, Quality = 1 } };
             var app = CreateClassUnderTest(items);
 
             // Act
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("foo", items[0].Name);
-            Assert.AreEqual(0, items[0].Quality);
-            Assert.AreEqual(-1, items[0].SellIn);
+            AssertExpectedItem("foo", 0, 0, items.First());
         }
 
         [Test]
-        public void UpdateQuality_ForUnknownItemWithQualityGreaterThan0_QualityIsZeroAndSellInIsMinus1()
+        public void UpdateQuality_ForUnknownItemWithQualityOf1AndSellInSetTo0_QualityIsZeroAndSellInIMinus1()
         {
             // Arrange
-            IList<Item> items = new List<Item> { new() { Name = "foo", SellIn = 0, Quality = 1 } };
+            IList<Item> items = new List<Item> { new() { Name = "foo", SellIn = 0, Quality = 1} };
             var app = CreateClassUnderTest(items);
 
             // Act
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("foo", items[0].Name);
-            Assert.AreEqual(0, items[0].Quality);
-            Assert.AreEqual(-1, items[0].SellIn);
+            AssertExpectedItem("foo", 0, -1, items.First());
         }
 
         [Test]
-        public void UpdateQuality_ForUnknownItemWithQualityGreaterThan1_QualityIsZeroAndSellInIsMinus1()
+        public void UpdateQuality_ForUnknownItemWithQualityOf2AndSellInSetToMinus1_QualityIsZeroAndSellInIsMinus2()
         {
             // Arrange
-            IList<Item> items = new List<Item> { new() { Name = "foo", SellIn = 0, Quality = 2 } };
+            IList<Item> items = new List<Item> { new() { Name = "foo", SellIn = -1, Quality = 2 } };
             var app = CreateClassUnderTest(items);
 
             // Act
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("foo", items[0].Name);
-            Assert.AreEqual(0, items[0].Quality);
-            Assert.AreEqual(-1, items[0].SellIn);
+            AssertExpectedItem("foo", 0, -2, items.First());
         }
 
         [Test]
@@ -67,9 +61,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Aged Brie", items[0].Name);
-            Assert.AreEqual(4, items[0].Quality);
-            Assert.AreEqual(-1, items[0].SellIn);
+            AssertExpectedItem("Aged Brie", 4, -1, items.First());
         }
 
         [Test]
@@ -83,9 +75,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Backstage passes to a TAFKAL80ETC concert", items[0].Name);
-            Assert.AreEqual(4, items[0].Quality);
-            Assert.AreEqual(9, items[0].SellIn);
+            AssertExpectedItem("Backstage passes to a TAFKAL80ETC concert", 4, 9, items.First());
         }
 
         [Test]
@@ -99,9 +89,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Backstage passes to a TAFKAL80ETC concert", items[0].Name);
-            Assert.AreEqual(5, items[0].Quality);
-            Assert.AreEqual(4, items[0].SellIn);
+            AssertExpectedItem("Backstage passes to a TAFKAL80ETC concert", 5, 4, items.First()); 
         }
 
         [Test]
@@ -115,9 +103,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Backstage passes to a TAFKAL80ETC concert", items[0].Name);
-            Assert.AreEqual(0, items[0].Quality);
-            Assert.AreEqual(-2, items[0].SellIn);
+            AssertExpectedItem("Backstage passes to a TAFKAL80ETC concert", 0, -2, items.First());
         }
 
         [Test]
@@ -131,9 +117,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Backstage passes to a TAFKAL80ETC concert", items[0].Name);
-            Assert.AreEqual(3, items[0].Quality);
-            Assert.AreEqual(11, items[0].SellIn);
+            AssertExpectedItem("Backstage passes to a TAFKAL80ETC concert", 3, 11, items.First());
         }
 
         [Test]
@@ -147,9 +131,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Sulfuras, Hand of Ragnaros", items[0].Name);
-            Assert.AreEqual(80, items[0].Quality);
-            Assert.AreEqual(0, items[0].SellIn);
+            AssertExpectedItem("Sulfuras, Hand of Ragnaros", 80, 0, items.First());
         }
 
         [Test]
@@ -163,9 +145,7 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Conjured Mana Cake", items[0].Name);
-            Assert.AreEqual(4, items[0].Quality);
-            Assert.AreEqual(2, items[0].SellIn);
+            AssertExpectedItem("Conjured Mana Cake", 4, 2, items.First());
         }
 
         [Test]
@@ -179,14 +159,19 @@ namespace csharp
             app.UpdateQuality();
 
             // Assert
-            Assert.AreEqual("Conjured Mana Cake", items[0].Name);
-            Assert.AreEqual(0, items[0].Quality);
-            Assert.AreEqual(1, items[0].SellIn);
+            AssertExpectedItem("Conjured Mana Cake", 0 , 1, items.First());
         }
 
         private GildedRose CreateClassUnderTest(IList<Item> items)
         {
             return new GildedRose(items, new ItemFactory());
+        }
+
+        private void AssertExpectedItem(string name, int quality, int sellIn, Item item)
+        {
+            Assert.AreEqual(name, item.Name);
+            Assert.AreEqual(quality, item.Quality);
+            Assert.AreEqual(sellIn, item.SellIn);
         }
     }
 }

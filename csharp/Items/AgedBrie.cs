@@ -1,21 +1,18 @@
-﻿namespace csharp.Items;
+﻿using csharp.Items.Base;
 
-public class AgedBrie : BaseItem
+namespace csharp.Items;
+
+public class AgedBrie : VariableQualityBaseItem
 {
-    protected override int MaximumQuality => 50;
-
-    public override void UpdateItem(Item item)
+    protected override void AdjustQuality(Item item)
     {
-        if (QualityIsBelowMaximum(item.Quality))
+        if (item.SellIn > 0)
         {
             item.Quality += 1;
         }
-
-        item.SellIn -= 1;
-
-        if (item.SellIn < 0 && QualityIsBelowMaximum(item.Quality))
+        else
         {
-            item.Quality += 1;
+            item.Quality += 2;
         }
     }
 }

@@ -1,21 +1,18 @@
-﻿namespace csharp.Items;
+﻿using csharp.Items.Base;
 
-public class DefaultItem : BaseItem
+namespace csharp.Items;
+
+public class DefaultItem : VariableQualityBaseItem
 {
-    protected override int MaximumQuality => 50;
-
-    public override void UpdateItem(Item item)
+    protected override void AdjustQuality(Item item)
     {
-        if (QualityIsAboveMinimum(item.Quality))
+        if (item.SellIn > 0)
         {
             item.Quality -= 1;
         }
-
-        item.SellIn -= 1;
-
-        if (item.SellIn < 0 && QualityIsAboveMinimum(item.Quality))
+        else
         {
-            item.Quality -= 1;
+            item.Quality -= 2;
         }
     }
 }
